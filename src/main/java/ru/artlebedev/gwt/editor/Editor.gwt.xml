@@ -1,0 +1,17 @@
+<module rename-to='editor'>
+
+  <!-- Inherit the core Web Toolkit stuff.                  -->
+  <inherits name='com.google.gwt.user.User'/>
+  <inherits name="com.google.gwt.i18n.I18N"/>
+  <inherits name='com.google.gwt.uibinder.UiBinder'/>
+  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+  <!--<inherits name='com.google.gwt.resources.Resources'/>-->
+  <!-- Specify the app entry point class.                   -->
+  <entry-point class='ru.artlebedev.gwt.editor.client.EditorSandbox'/>
+  <!--<stylesheet src='People.css'/>-->
+  <!-- Internationalization support. -->
+  <extend-property name="locale" values="en"/>
+  <extend-property name="locale" values="ru"/>
+  <!--<set-property name="ClientBundle.enableInlining" value="false"/>-->
+  <!--<set-property name="user.agent" value="gecko"/>-->
+</module>
