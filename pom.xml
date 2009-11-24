@@ -260,7 +260,7 @@
                       <arg value="-style"/>
                       <arg value="DETAILED"/>
                       -->
-                      <arg value="ru.artlebedev.gwt.editor.Editor"/>
+                      <arg value="ru.artlebedev.gwt.edit.Editor"/>
                     </java>
                   </tasks>
                 </configuration>

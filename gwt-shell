@@ -3,5 +3,5 @@ GWT_HOME=/mnt/sda1/tools/gwt-2.0.0-rc1
 APPDIR=`dirname $0`;
 
 $JAVA_HOME/bin/java -Xms256m -Xmx512m -cp "$APPDIR/src/main/java:$APPDIR/bin:$GWT_HOME/gwt-user.jar:$GWT_HOME/gwt-dev.jar" \
-com.google.gwt.dev.DevMode -port 8080 -startupUrl / ru.artlebedev.gwt.editor.Editor -war src/main/webapp 
+com.google.gwt.dev.DevMode -port 8080 -startupUrl / ru.artlebedev.gwt.edit.Editor -war src/main/webapp 
 
