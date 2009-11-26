@@ -1,6 +1,10 @@
 package ru.artlebedev.gwt.edit.client.ui;
 
+import ru.artlebedev.gwt.edit.client.ui.selection.BrowserEditGeckoImpl;
+import ru.artlebedev.gwt.edit.client.ui.selection.BrowserEdit;
+
 import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.Element;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,10 +12,18 @@ import com.google.gwt.user.client.ui.RichTextArea;
  * Date: 24.11.2009
  * Time: 14:03:31
  */
-public class EditArea extends RichTextArea {
-  public native void test() /*-{
-    console.log("this");
-    console.log("gg", 132);
-//    console.log(typeof(this));
-  }-*/;
+public class EditArea extends RichTextArea implements BrowserEditable {
+  BrowserEdit impl;
+
+  public EditArea() {
+    impl = new BrowserEditGeckoImpl();
+  }
+
+  public Element getSelectionCurrent() {
+    return impl.getSelectionCurrent(getElement());
+  }
+
+  public String getSelectionToString() {
+    return impl.getSelectionToString(getElement());
+  }
 }
