@@ -2,17 +2,14 @@ package ru.artlebedev.gwt.edit.client.ui;
 
 import ru.artlebedev.gwt.edit.client.ui.style.TextStyle;
 
-import com.google.gwt.user.client.ui.UIObject;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.UIObject;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,8 +26,6 @@ public class StylePanel extends UIObject {
 
   @UiField
   DivElement containerDiv;
-
-  
 
   public TextStyle[] getStyles() {
     return styles;

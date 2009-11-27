@@ -1,12 +1,11 @@
 package ru.artlebedev.gwt.edit.client;
 
-import ru.artlebedev.gwt.edit.client.presenter.NodeProcessor;
+import ru.artlebedev.gwt.edit.client.presenter.Formatter;
 import ru.artlebedev.gwt.edit.client.ui.EditArea;
 import ru.artlebedev.gwt.edit.client.ui.StatusPanel;
 import ru.artlebedev.gwt.edit.client.ui.style.TextStyle;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -17,6 +16,7 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
@@ -29,12 +29,18 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class EditorSandbox implements EntryPoint {
   private EditArea editArea;
   private StatusPanel status;
-  private NodeProcessor processor;
+  private Formatter processor;
+  private VerticalPanel stylePanel;
+  private TextArea textArea;
 
   @Override
   public void onModuleLoad() {
-    processor = new NodeProcessor();
-    editArea = new EditArea();
+    processor = new Formatter();
+    stylePanel = new VerticalPanel();
+    textArea = new TextArea();
+    textArea.setWidth("100%");
+    textArea.setHeight("100%");
+    processor.setEdit(editArea = new EditArea());
     final VerticalPanel panel = new VerticalPanel();
     editArea.setHTML("test <strong>bold</strong> and <em>italic</em>");
     final Button getSelectionBtn = new Button("get selection");
@@ -50,6 +56,7 @@ public class EditorSandbox implements EntryPoint {
     styleLayout.add(panel);
     styleLayout.add(label);
     statusLayout.add(status);
+    statusLayout.add(textArea);
     getSelectionBtn.addClickHandler(new ClickHandler() {
       @Override
       public void onClick(ClickEvent clickEvent) {
@@ -74,7 +81,9 @@ public class EditorSandbox implements EntryPoint {
     final ClickHandler clickHandler = new ClickHandler() {
       @Override
       public void onClick(ClickEvent clickEvent) {
-        GWT.log("source: " + clickEvent.getSource(), null);
+        if (clickEvent.getSource() instanceof TextStyle) {
+          processor.formatTo((TextStyle) clickEvent.getSource());
+        }
       }
     };
     TextStyle[] styles = new TextStyle[] {
@@ -82,19 +91,19 @@ public class EditorSandbox implements EntryPoint {
         new TextStyle("<em>italic</em>", "EM"),
         new TextStyle("<p>para</p>", "P"),
     };
-    VerticalPanel panel = new VerticalPanel();
-    panel.addStyleName("StyleList");
+    stylePanel.addStyleName("StyleList");
     for (TextStyle textStyle : styles) {
-      panel.add(textStyle);
+      stylePanel.add(textStyle);
       textStyle.addClickHandler(clickHandler);
     }
-    return panel;
+    return stylePanel;
   }
 
   private class ChangeHandler implements KeyUpHandler, ClickHandler, MouseUpHandler {
     private void update() {
       status.updateNodesPanel(editArea);
-      processor.update(editArea);
+      processor.updateSelection();
+      textArea.setText(editArea.getHTML());
     }
 
     @Override

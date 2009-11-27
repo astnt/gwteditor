@@ -1,6 +1,6 @@
 package ru.artlebedev.gwt.edit.client.ui.selection;
 
-import com.google.gwt.user.client.Element;
+import com.google.gwt.dom.client.Element;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,4 +13,7 @@ public interface BrowserEdit {
   Element getSelectionParent(Element element);
   String getSelectionToString(Element element);
   int getStartOffset(Element element);
+  int getEndOffset(Element element);
+  Element getStartContainer(Element element);
+  Element getEndContainer(Element element);
 }

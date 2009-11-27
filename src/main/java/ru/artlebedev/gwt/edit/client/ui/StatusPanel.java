@@ -36,6 +36,7 @@ public class StatusPanel extends VerticalPanel {
     for (int i = nodesOrder.size() - 1; i > 0; i -= 1) {
       nodePath.add(new Button(nodesOrder.get(i).toLowerCase()));
     }
-    selected.setText(editArea.getSelectionToString());
+    selected.setText(editArea.getSelectionToString()
+        + " (" + editArea.getStartOffset() + ";" + editArea.getEndOffset() + ")");
   }
 }

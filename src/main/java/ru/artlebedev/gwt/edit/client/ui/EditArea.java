@@ -4,7 +4,7 @@ import ru.artlebedev.gwt.edit.client.ui.selection.BrowserEditGeckoImpl;
 import ru.artlebedev.gwt.edit.client.ui.selection.BrowserEdit;
 
 import com.google.gwt.user.client.ui.RichTextArea;
-import com.google.gwt.user.client.Element;
+import com.google.gwt.dom.client.Element;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,8 +23,20 @@ public class EditArea extends RichTextArea implements BrowserEditable {
     return impl.getSelectionParent(getElement());
   }
 
+  public Element getStartContainer() {
+    return impl.getStartContainer(getElement());
+  }
+
+  public Element getEndContainer() {
+    return impl.getEndContainer(getElement());
+  }
+
   public int getStartOffset() {
     return impl.getStartOffset(getElement());
+  }
+
+  public int getEndOffset() {
+    return impl.getEndOffset(getElement());
   }
 
   public String getSelectionToString() {
