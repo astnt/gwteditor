@@ -8,7 +8,6 @@
   <!--<inherits name='com.google.gwt.resources.Resources'/>-->
   <!-- Specify the app entry point class.                   -->
   <entry-point class='ru.artlebedev.gwt.edit.client.EditorSandbox'/>
-  <!--<stylesheet src='People.css'/>-->
   <!-- Internationalization support. -->
   <extend-property name="locale" values="en"/>
   <extend-property name="locale" values="ru"/>
