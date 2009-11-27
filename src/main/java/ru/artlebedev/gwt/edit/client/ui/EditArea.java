@@ -19,8 +19,12 @@ public class EditArea extends RichTextArea implements BrowserEditable {
     impl = new BrowserEditGeckoImpl();
   }
 
-  public Element getSelectionCurrent() {
-    return impl.getSelectionCurrent(getElement());
+  public Element getSelectionParent() {
+    return impl.getSelectionParent(getElement());
+  }
+
+  public int getStartOffset() {
+    return impl.getStartOffset(getElement());
   }
 
   public String getSelectionToString() {

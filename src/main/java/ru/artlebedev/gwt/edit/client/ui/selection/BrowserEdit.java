@@ -10,6 +10,7 @@ import com.google.gwt.user.client.Element;
  * To change this template use File | Settings | File Templates.
  */
 public interface BrowserEdit {
-  Element getSelectionCurrent(Element element);
+  Element getSelectionParent(Element element);
   String getSelectionToString(Element element);
+  int getStartOffset(Element element);
 }

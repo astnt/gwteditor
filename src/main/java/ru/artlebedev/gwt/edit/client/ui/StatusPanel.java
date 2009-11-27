@@ -25,7 +25,7 @@ public class StatusPanel extends VerticalPanel {
   }
 
   public void updateNodesPanel(EditArea editArea) {
-    Element current = editArea.getSelectionCurrent();
+    Element current = editArea.getSelectionParent();
     List<String> nodesOrder = new ArrayList<String>();
     nodesOrder.add(current.getTagName());
     while (current.hasParentElement()) {

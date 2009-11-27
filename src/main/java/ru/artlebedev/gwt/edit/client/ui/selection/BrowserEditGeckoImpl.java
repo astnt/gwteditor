@@ -1,7 +1,5 @@
 package ru.artlebedev.gwt.edit.client.ui.selection;
 
-import ru.artlebedev.gwt.edit.client.ui.BrowserEditable;
-
 import com.google.gwt.user.client.Element;
 
 /**
@@ -12,9 +10,8 @@ import com.google.gwt.user.client.Element;
  * To change this template use File | Settings | File Templates.
  */
 public class BrowserEditGeckoImpl implements BrowserEdit {
-  private BrowserEditable editable;
 
-  public native Element getSelectionCurrent(Element element) /*-{
+  public native Element getSelectionParent(Element element) /*-{
     console.log("cur offset", element.contentWindow.getSelection().getRangeAt(0).startOffset);
     console.log("cur end", element.contentWindow.getSelection().getRangeAt(0).endOffset);
     var selection = element.contentWindow.getSelection();
@@ -24,6 +21,10 @@ public class BrowserEditGeckoImpl implements BrowserEdit {
     }
     console.log("range count:", selection.rangeCount);
     return element.contentWindow.getSelection().getRangeAt(0).startContainer.parentNode;
+  }-*/;
+
+  public native int getStartOffset(Element element) /*-{
+    return element.contentWindow.getSelection().getRangeAt(0).startOffset;
   }-*/;
 
   public native String getSelectionToString(Element element) /*-{

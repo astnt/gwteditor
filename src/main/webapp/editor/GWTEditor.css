@@ -1,0 +1,14 @@
+.StyleList {
+  border: solid 1px silver;
+  margin-bottom: 1em;
+}
+
+.StyleList .gwt-HTML {
+  padding: 0.5em;
+  cursor: pointer;
+  border: solid 1px white;
+}
+
+.StyleList .gwt-HTML:hover {
+  border: solid 1px red;
+}

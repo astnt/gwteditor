@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.HTML;
  * User: anton
  * Date: 26.11.2009
  * Time: 16:07:30
- * To change this template use File | Settings | File Templates.
  */
 public class TextStyle extends HTML {
   private String tagName;
