@@ -1,5 +1,5 @@
 #!/bin/sh
-GWT_HOME=/mnt/sda1/tools/gwt-2.0.0-rc1
+GWT_HOME=/home/`whoami`/tools/gwt-2.0.0-rc2
 APPDIR=`dirname $0`;
 
 $JAVA_HOME/bin/java -Xms256m -Xmx512m -cp "$APPDIR/src/main/java:$APPDIR/bin:$GWT_HOME/gwt-user.jar:$GWT_HOME/gwt-dev.jar" \

@@ -5,8 +5,41 @@
   <title>GWT Editor</title>
   <meta name="gwt:property" content="locale=ru">
   <script language='javascript' src='editor/editor.nocache.js'></script>
-  <script language='javascript' src='editor/GWTEditor.css'></script>
-  <link rel="stylesheet" type="text/css" media="all" href="editor/GWTEditor.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="editor/GWTEditor.css"/>
+  <style type="text/css">
+    .StyleList {
+      border: solid 1px silver;
+      margin-bottom: 1em;
+    }
+
+    .StyleList .gwt-HTML {
+      padding: 0.5em;
+      cursor: pointer;
+      border: solid 1px white;
+    }
+
+    .StyleList .gwt-HTML:hover {
+      border: solid 1px red;
+    }
+    .EditorMainLayout {
+      width:100%;
+    }
+    .EditorMainLayout td {
+      vertical-align:top;
+      padding:1em;
+    }
+    .EditorMainLayout td td {
+      padding:0;
+    }
+    #StyleLayout .StyleList,
+    #EditorLayout .gwt-RichTextArea
+    {
+      width:100%;
+    }
+    #StatusLayout {
+      padding-top:1em;
+    }
+  </style>
 </head>
 <body>
 <iframe src="javascript:''" id="__gwt_historyFrame"
@@ -18,18 +51,14 @@
     in order for this application to display correctly.
   </div>
 </noscript>
-<table>
+<table class="EditorMainLayout">
   <tr>
     <td>
       <div id="EditorLayout"></div>
+      <div id="StatusLayout"></div>
     </td>
     <td>
       <div id="StyleLayout" style="vertical-align: top;"></div>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <div id="StatusLayout"></div>
     </td>
   </tr>
 </table>

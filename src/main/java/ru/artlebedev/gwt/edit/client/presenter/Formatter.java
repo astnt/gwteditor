@@ -6,6 +6,7 @@ import ru.artlebedev.gwt.edit.client.ui.style.TextStyle;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.Document;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,6 +21,7 @@ public class Formatter {
   private Element first;
   private Element last;
   private EditArea edit;
+  private Document document;
 
   public void setEdit(EditArea edit) {
     this.edit = edit;
@@ -30,39 +32,36 @@ public class Formatter {
     end = edit.getEndOffset();
     first = edit.getStartContainer();
     last = edit.getEndContainer();
+    document = first.getOwnerDocument();
   }
 
   public void formatTo(TextStyle textStyle) {
-    boolean selected = isSelected(textStyle);
-    GWT.log("format to: " + textStyle + "; selected " + selected, null);
-
-    Node newChild = createNewChild(textStyle.getTagName(), selected);
-    final Element parent;
-    final Element element;
-    if (selected) {
-      element = first.getParentElement();
-      parent = first.getParentElement().getParentElement();
-    } else {
-      element = first;
-      parent = first.getParentElement();
+    Node current = first;
+    while (true) {
+      if (current.getNodeType() == Document.TEXT_NODE) {
+        if (current.equals(first) && start < current.getNodeValue().length()) {
+          // cut node and replace with new
+          String value = current.getNodeValue();
+          String oldFormat = value.substring(0, value.indexOf(start));
+          String newFormat = value.substring(value.indexOf(start));
+          current.setNodeValue(oldFormat);
+          current.getParentElement().insertAfter(createNewChild(textStyle.getTagName(), newFormat), current);
+        }
+      } else if (current.getNodeType() == Document.ELEMENT_NODE) {
+        Element element = current.cast();
+        if (!element.getTagName().equals(textStyle.getTagName())) { // not equal with new formatter element
+          current.getParentElement().replaceChild(createNewChild(textStyle.getTagName(), element.getInnerText()), current);
+        }
+      }
+      if (current.equals(last)) { break; }
+      current = current.getNextSibling();
+      if (current == null) { break; }
     }
-    GWT.log("parent: " + parent, null);
-//    if (start == 0) {
-      parent.replaceChild(newChild, element);
-//    }
   }
 
-  private boolean isSelected(TextStyle textStyle) {
-    return first.hasParentElement() && textStyle.getTagName().equals(first.getParentElement().getTagName());
-  }
-
-  private Node createNewChild(String tagName, boolean selected) {
-    if (selected) {
-      return first.getOwnerDocument().createTextNode(first.getInnerText());
-    } else {
-      final Element element = first.getOwnerDocument().createElement(tagName);
-      element.setInnerText(first.getInnerText());
-      return element;
-    }
+  private Node createNewChild(String tagName, String text) {
+    final Element element = document.createElement(tagName);
+    element.setInnerText(text);
+    return element;
   }
 }
