@@ -42,7 +42,7 @@ public class EditorSandbox implements EntryPoint {
     textArea.setHeight("100%");
     processor.setEdit(editArea = new EditArea());
     final VerticalPanel panel = new VerticalPanel();
-    editArea.setHTML("test <strong>bold</strong> and <em>italic</em>");
+    editArea.setHTML("test <strong>bold</strong> and <em>italic</em> <p>Test - <em>text with <strong>bold</strong> in node</em> and dot.</p>");
     final Button getSelectionBtn = new Button("get selection");
     final Button getCurPosBtn = new Button("get cur position");
     final Label label = new Label("test layout");

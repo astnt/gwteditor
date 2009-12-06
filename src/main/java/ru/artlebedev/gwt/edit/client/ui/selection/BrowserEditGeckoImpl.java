@@ -29,7 +29,7 @@ public class BrowserEditGeckoImpl implements BrowserEdit {
   }-*/;
 
   public native Element getEndContainer(Element element) /*-{
-//    console.log("end container", element.contentWindow.getSelection().getRangeAt(0).endContainer);
+    console.log("end container", element.contentWindow.getSelection().getRangeAt(0).endContainer);
     return element.contentWindow.getSelection().getRangeAt(0).endContainer;
   }-*/;
 
