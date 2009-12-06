@@ -37,20 +37,30 @@ public class Formatter {
 
   public void formatTo(TextStyle textStyle) {
     Node current = first;
+    if (first.equals(last) && end <= start) { return; } // nothing selected
     while (true) {
       if (current.getNodeType() == Document.TEXT_NODE) {
         if (current.equals(first) && start < current.getNodeValue().length()) {
           // cut node and replace with new
           String value = current.getNodeValue();
-          String oldFormat = value.substring(0, value.indexOf(start));
-          String newFormat = value.substring(value.indexOf(start));
+          String oldFormat = value.substring(0, start);
           current.setNodeValue(oldFormat);
-          current.getParentElement().insertAfter(createNewChild(textStyle.getTagName(), newFormat), current);
+
+          if (current.equals(last) && end != value.length()) {
+            String newFormat = value.substring(start, end);
+            Node child = createNewChild(textStyle, newFormat);
+            current.getParentElement().insertAfter(child, current);
+            String endFormat = value.substring(end, value.length());
+            current.getParentElement().insertAfter(document.createTextNode(endFormat), child);
+          } else {
+            String newFormat = value.substring(start);
+            current.getParentElement().insertAfter(createNewChild(textStyle, newFormat), current);
+          }
         }
       } else if (current.getNodeType() == Document.ELEMENT_NODE) {
         Element element = current.cast();
         if (!element.getTagName().equals(textStyle.getTagName())) { // not equal with new formatter element
-          current.getParentElement().replaceChild(createNewChild(textStyle.getTagName(), element.getInnerText()), current);
+          current.getParentElement().replaceChild(createNewChild(textStyle, element.getInnerText()), current);
         }
       }
       if (current.equals(last)) { break; }
@@ -59,9 +69,10 @@ public class Formatter {
     }
   }
 
-  private Node createNewChild(String tagName, String text) {
-    final Element element = document.createElement(tagName);
+  private Node createNewChild(TextStyle style, String text) {
+    final Element element = document.createElement(style.getTagName());
     element.setInnerText(text);
     return element;
   }
 }
+
