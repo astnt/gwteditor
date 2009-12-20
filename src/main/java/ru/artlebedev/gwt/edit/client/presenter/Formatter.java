@@ -1,12 +1,11 @@
 package ru.artlebedev.gwt.edit.client.presenter;
 
-import ru.artlebedev.gwt.edit.client.ui.EditArea;
-import ru.artlebedev.gwt.edit.client.ui.style.TextStyle;
-
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Node;
-import com.google.gwt.dom.client.Document;
+import ru.artlebedev.gwt.edit.client.ui.EditArea;
+import ru.artlebedev.gwt.edit.client.ui.style.TextStyle;
 
 /**
  * Created by IntelliJ IDEA.
@@ -50,34 +49,53 @@ public class Formatter {
     log("current", current);
     if (current == null) { return null; }
     if (current.getNodeType() == Document.TEXT_NODE) {
-      formatText(style, current);
+      current = formatText(current);
     }
     if (current.getNodeType() == Document.ELEMENT_NODE) {
       Element element = current.cast();
       if (!element.getTagName().equals(style.getTagName())) { // если форматирование ноды отличается
-//        current.getParentElement().replaceChild(createNewChild(style, element.getInnerText()), current);
+//        current.getParentElement().replaceChild(createNewChild(element.getInnerText()), current);
         if (element.hasChildNodes()) {
           current = formatTo(element.getFirstChild()); // двигаемся дальше
         }
+      } else {
+        log("format is equal", current);
       }
     }
-    if (current == null || last.equals(current)) { return null; } // останавливаем обработку
+    if (current == null || last.equals(current)) { log("break if null", current); return null; } // останавливаем обработку
     if (current.getNextSibling() == null && current.getParentElement() != null) {
       log("move down to parent sibling", current.getParentElement().getNextSibling());
-      formatTo(current.getParentElement().getNextSibling());
+      if (current.getNextSibling() == null) { current = findNextSibling(current); }
+      current = formatTo(current.getParentElement().getNextSibling());
     } else {
       log("move next sibling", current.getNextSibling());
-      formatTo(current.getNextSibling());
+      if (current.getNextSibling() == null) {
+        log("check for another", current.getParentNode());
+        log("check for another another", current.getParentNode().getParentNode());
+        current = findNextSibling(current);
+      }
+      current = formatTo(current.getNextSibling());
     }
+    return current;
+  }
+
+  private Node findNextSibling(Node current) {
+//    int i = 0;
+//    while (current.getNextSibling() == null) {
+//      log("trying while... ", current);
+//      current = current.getParentNode();
+//      if (i > 100) { break; }
+//      i += 1;
+//    }
     return current;
   }
 
   /**
    * Обработка текстовой ноды.
-   * @param style
-   * @param current
+   * @param current нода по которой следуем
+   * @return новую/ту же ноду, взависимости сменили ее или нет
    */
-  private void formatText(TextStyle style, Node current) {
+  private Node formatText(Node current) {
     log("text", current);
     String value = current.getNodeValue();
     if (current.equals(first) && start < current.getNodeValue().length()) { // если первая и старт меньше длины значения
@@ -86,29 +104,42 @@ public class Formatter {
 
       if (current.equals(last) && end != value.length()) { // если послендняя и конец выделения еще не полностью ноду выделяет
         String newFormat = value.substring(start, end); // то что надо сделать по новому
-        Node childWithNewFormat = createNewChild(style, newFormat);
+        Node childWithNewFormat = createNewChild(newFormat);
         current.getParentElement().insertAfter(childWithNewFormat, current);
         String endFormat = value.substring(end, value.length());
         current.getParentElement().insertAfter(document.createTextNode(endFormat), childWithNewFormat); // вставляем что осталось по старому
       } else { // иначе формотируем по новому до конца текстовой ноды
         String newFormat = value.substring(start);
-        current.getParentElement().insertAfter(createNewChild(style, newFormat), current);
+        Node replacement = createNewChild(newFormat);
+        current.getParentElement().insertAfter(replacement, current);
+        current = replacement;
       }
     } else if (current.equals(last) && end > 0) { // если это последняя нода и есть выделеное
       if (end == value.length()) { // если полностью дорезаем
-        current.getParentElement().replaceChild(createNewChild(style, value), current);
+        current = replace(current, value);
       } else {
-        current.getParentElement().insertBefore(createNewChild(style, value.substring(0, end)), current);
+        current.getParentElement().insertBefore(createNewChild(value.substring(0, end)), current);
         current.setNodeValue(value.substring(end));
       }
+    } else { // где-то между стартом и началом
+      if (!current.getParentElement().getTagName().equals(style.getTagName())) {
+        current = replace(current, current.getNodeValue());
+      }
     }
+    return current;
+  }
+
+  private Node replace(Node current, String nodeValue) {
+    Node replacement = createNewChild(nodeValue);
+    current.getParentElement().replaceChild(replacement, current);
+    return replacement;
   }
 
   private native Element log(String message, Object element) /*-{
-    console.log(message, element)
+    console.log(message, element);
   }-*/;
 
-  private Node createNewChild(TextStyle style, String text) {
+  private Node createNewChild(String text) {
     final Element element = document.createElement(style.getTagName());
     element.setInnerText(text);
     return element;
