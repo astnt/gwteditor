@@ -43,34 +43,16 @@ public class EditorSandbox implements EntryPoint {
     processor.setEdit(editArea = new EditArea());
     final VerticalPanel panel = new VerticalPanel();
     editArea.setHTML("test <strong>bold</strong> and <em>italic</em> <p>Test - <em>text with <strong>bold</strong> in node</em> and dot.</p>");
-    final Button getSelectionBtn = new Button("get selection");
-    final Button getCurPosBtn = new Button("get cur position");
     final Label label = new Label("test layout");
     status = new StatusPanel();
     RootPanel.get("EditorLayout").add(editArea);
     final RootPanel styleLayout = RootPanel.get("StyleLayout");
     final RootPanel statusLayout = RootPanel.get("StatusLayout");
-    panel.add(getSelectionBtn);
-    panel.add(getCurPosBtn);
     styleLayout.add(createStyles());
     styleLayout.add(panel);
     styleLayout.add(label);
     statusLayout.add(status);
     statusLayout.add(textArea);
-    getSelectionBtn.addClickHandler(new ClickHandler() {
-      @Override
-      public void onClick(ClickEvent clickEvent) {
-        final String result = editArea.getSelectionToString();
-        label.setText(result);
-      }
-    });
-    getCurPosBtn.addClickHandler(new ClickHandler() {
-      @Override
-      public void onClick(ClickEvent clickEvent) {
-        final Element current = editArea.getSelectionParent();
-        label.setText(current.getTagName());
-      }
-    });
     final ChangeHandler changeHandler = new ChangeHandler();
     editArea.addKeyUpHandler(changeHandler);
     editArea.addClickHandler(changeHandler);

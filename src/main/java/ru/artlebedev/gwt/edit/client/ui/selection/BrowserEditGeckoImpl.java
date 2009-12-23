@@ -24,12 +24,12 @@ public class BrowserEditGeckoImpl implements BrowserEdit {
   }-*/;
 
   public native Element getStartContainer(Element element) /*-{
-    console.log("start container", element.contentWindow.getSelection().getRangeAt(0).startContainer);
+//    console.log("start container", element.contentWindow.getSelection().getRangeAt(0).startContainer);
     return element.contentWindow.getSelection().getRangeAt(0).startContainer;
   }-*/;
 
   public native Element getEndContainer(Element element) /*-{
-    console.log("end container", element.contentWindow.getSelection().getRangeAt(0).endContainer);
+//    console.log("end container", element.contentWindow.getSelection().getRangeAt(0).endContainer);
     return element.contentWindow.getSelection().getRangeAt(0).endContainer;
   }-*/;
 
